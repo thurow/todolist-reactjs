@@ -2,22 +2,24 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { ADD_TODO } from 'reducers/todos/actions'
-import { addTodo } from 'reducers/todos/action-creators'
+import { addTodo, toggleTodo } from 'reducers/todos/action-creators'
 
-const App = ({ todos, handleAddTodo }) => (
+const App = ({ todos, handleAddTodo, handleToggleTodo }) => (
   <div>
-    {console.log(todos)}
     <form onSubmit={handleAddTodo}>
       <input type='text' name='todo' />
       <button type='submit'>Adicionar</button>
     </form>
     <ul>
-      <li style={{ textDecoration: 'line-through' }} className='completed'>Item 1</li>
-      <li>Item 2</li>
-      <li>Item 3</li>
-      <li>Item 4</li>
-      <li>Item 5</li>
+      {todos.map(todo => (
+        <li
+          key={todo.id}
+          style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+          onClick={handleToggleTodo(todo.id)}
+        >
+          {todo.text}
+        </li>
+      ))}
     </ul>
 
     <div>
@@ -28,13 +30,17 @@ const App = ({ todos, handleAddTodo }) => (
 )
 
 const mapStateToProps = state => ({
-  todos: state
+  todos: state.todos
 });
 
 const mapDispatchToProps = dispatch => ({
   handleAddTodo: (e) => {
     e.preventDefault()
     dispatch(addTodo(e.target.todo.value))
+    e.target.todo.value = ''
+  },
+  handleToggleTodo: id => e => {
+    dispatch(toggleTodo(id))
   }
 })
 
