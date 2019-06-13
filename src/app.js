@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { addTodo, toggleTodo } from 'reducers/todos/action-creators'
+import { addTodo, toggleTodo } from './redux-flow/reducers/todos/action-creators'
 
 const App = ({ todos, handleAddTodo, handleToggleTodo }) => (
   <div>
