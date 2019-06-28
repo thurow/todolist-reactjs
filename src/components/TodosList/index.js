@@ -3,6 +3,14 @@ import { connect } from 'react-redux';
 import { toggleTodo } from '../../redux-flow/reducers/todos/action-creators';
 import * as filterActions from '../../redux-flow/reducers/visibility-filter/actions'
 
+const getVisibleTodos = (todos, activeFilter) => {
+  return {
+    [filterActions.SHOW_ALL]: todos,
+    [filterActions.SHOW_COMPLETED]: todos.filter(todo => todo.completed),
+    [filterActions.SHOW_ACTIVE]: todos.filter(todo => !todo.completed)
+  }[activeFilter]
+}
+
 const TodosList = ({ todos, activeFilter, handleToggleTodo }) => (
   <ul>
     {getVisibleTodos(todos, activeFilter).map(todo => (
@@ -16,14 +24,6 @@ const TodosList = ({ todos, activeFilter, handleToggleTodo }) => (
     ))}
   </ul>
 )
-
-const getVisibleTodos = (todos, activeFilter) => {
-  return {
-    [filterActions.SHOW_ALL]: todos,
-    [filterActions.SHOW_COMPLETED]: todos.filter(todo => todo.completed),
-    [filterActions.SHOW_ACTIVE]: todos.filter(todo => !todo.completed)
-  }[activeFilter]
-}
 
 const mapStateToProps = state => ({
   todos: state.todos,
